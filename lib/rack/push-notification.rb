@@ -4,16 +4,26 @@ require 'rack/contrib'
 require 'sinatra/base'
 require 'sinatra/param'
 
+require 'coffee-script'
+require 'eco'
+require 'sass'
+require 'zurb-foundation'
+require 'compass'
+require 'sprockets'
+require 'sprockets-sass'
+
 require 'sequel'
 
 require 'rack/push-notification/version'
 
+require 'pp'
+
 Sequel.extension(:pg_array)
 
-module Rack::PushNotification
-end
-
 module Rack
+  module PushNotification
+  end
+
   def self.PushNotification(options = {})
     klass = Rack::PushNotification.const_set("Device", Class.new(Sequel::Model))
     klass.dataset = :devices
@@ -61,9 +71,15 @@ module Rack
 
     app = Class.new(Sinatra::Base) do
       use Rack::PostBodyContentTypeParser
+      use Rack::Static, urls: ['/images'], root: ::File.join(::File.dirname(__FILE__), "push-notification/assets")
       helpers Sinatra::Param
 
-      disable :raise_errors, :show_exceptions
+      set :assets, Sprockets::Environment.new(::File.join(::File.dirname(__FILE__), "push-notification/assets"))
+      set :views, ::File.join(::File.dirname(__FILE__), "push-notification/assets/views")
+      settings.assets.append_path "javascripts"
+      settings.assets.append_path "stylesheets"
+
+      # disable :raise_errors, :show_exceptions
 
       before do
         content_type :json
@@ -113,6 +129,22 @@ module Rack
           status 406
           {errors: record.errors}.to_json
         end
+      end
+
+      get "/javascripts/:file.js" do
+        content_type "application/javascript"
+        settings.assets["#{params[:file]}.js"]
+      end
+
+      get "/stylesheets/:file.css" do
+        content_type "text/css"
+        settings.assets["#{params[:file]}.css"]
+      end
+
+      get '*' do
+        content_type :html
+
+        haml :index
       end
     end
 

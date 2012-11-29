@@ -1,6 +1,6 @@
 Rack::PushNotification
 ======================
-**An extensible, Rack-mountable webservice for managing push notification information**
+**A Rack-mountable webservice for managing push notification information**
 
 There is misconception that managing push notification information is a difficult problem. It's really not.
 

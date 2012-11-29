@@ -1,0 +1,22 @@
+<h1>Devices</h1>
+
+<table>
+  <thead>
+    <th>Token</th>
+    <th>Alias</th>
+    <th>Badge</th>
+    <th>Locale</th>
+    <th>Time Zone</th>
+  </thead>
+  <tbody>
+  <% for device in @devices: %>
+    <tr>
+      <td><%= device.token %></td>
+      <td><%= device.alias or "None" %></td>
+      <td><%= device.badge %></td>
+      <td><%= device.locale %></td>
+      <td><%= device.timezone %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
