@@ -18,7 +18,7 @@ require 'rack/push-notification/version'
 
 require 'pp'
 
-Sequel.extension(:pg_array)
+Sequel.extension(:pg_array, :migration)
 
 module Rack
   module PushNotification
@@ -28,6 +28,8 @@ module Rack
     klass = Rack::PushNotification.const_set("Device", Class.new(Sequel::Model))
     klass.dataset = :devices
 
+    Sequel::Migrator.run(klass.db, ::File.join(::File.dirname(__FILE__), "push-notification/migrations"))
+
     klass.class_eval do
       self.strict_param_setting = false
       self.raise_on_save_failure = false
@@ -36,27 +38,6 @@ module Rack
       plugin :validation_helpers
       plugin :timestamps, force: true
       plugin :schema
-
-      set_schema do
-        primary_key :id
-
-        column :token,      :varchar,       null: false, unique: true
-        column :alias,      :varchar 
-        column :badge,      :int4,          null: false, default: 0
-        column :locale,     :varchar
-        column :language,   :varchar
-        column :timezone,   :varchar,       null: false, default: 'UTC'
-        column :ip_address, :inet
-        column :lat,        :float8
-        column :lng,        :float8
-        column :tags,       :'text[]'
-
-        index :token
-        index :alias
-        index [:lat, :lng]
-      end
-
-      create_table unless table_exists?
 
       def before_validation
         normalize_token!
@@ -86,15 +67,18 @@ module Rack
       end
 
       get '/devices/?' do
-        param :languages, Array
-        param :tags, Array
+        param :q, String, empty: false
+        param :offset, Integer, default: 0
+        param :limit, Integer, max: 100, min: 1, default: 25
 
         @devices = klass.dataset
-        [:alias, :badge, :locale, :languages, :timezone, :tags].each do |attribute|
-          @devices = @devices.filter(attribute => params[attribute]) if params[attribute]
-        end
+        @devices = @devices.filter("tsv @@ to_tsquery('english', ?)", "#{params[:q]}:*") if params[:q]
+        @devices = @devices.limit(params[:limit], params[:offset])
         
-        @devices.to_json
+        {
+          devices: @devices,
+          total: klass.dataset.count 
+        }.to_json
       end
 
       put '/devices/:token/?' do
@@ -102,7 +86,6 @@ module Rack
         param :tags, Array
 
         @record = klass.new(params)
-        @record.tags = nil
         if @record.save
           status 201
           @record.to_json
