@@ -1,30 +1,23 @@
 class RPN.Views.Devices extends Backbone.View
   template: JST['templates/devices']
+  partial: JST['templates/_devices']
   el: "[role='main']"
 
   events:
-    'click a.previous': 'gotoPrevious'
-    'click a.next': 'gotoNext'
-    'click a.page': 'gotoPage'
+    'keyup form.filter input': 'filter'
 
   initialize: ->
     @collection.on 'reset', =>
-      @render()
+      @$el.find("table").html(@partial(devices: @collection))
 
   render: ->
-    console.log(@collection)
     @$el.html(@template(devices: @collection))
+
+    @paginationView ||= new RPN.Views.Pagination(collection: @collection)
+    @paginationView.render()
     @
 
-  gotoPrevious: (e) ->
+  filter: (e) ->
     e.preventDefault()
-    @collection.goTo(@collection.currentPage - 1) unless @collection.currentPage == @collection.firstPage
-
-  gotoNext: (e) ->
-    e.preventDefault()
-    @collection.goTo(@collection.currentPage + 1) unless @collection.currentPage == @collection.totalPages
-
-  gotoPage: (e) ->
-    e.preventDefault()
-    page = $(e.target).text()
-    @collection.goTo(page)
+    @collection.query = $(e.target).val()
+    @collection.fetch()

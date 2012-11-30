@@ -9,17 +9,19 @@ class RPN.Collections.Devices extends Backbone.Paginator.requestPager
   paginator_ui:
     firstPage: 1,
     currentPage: 1,
-    perPage: 3
+    perPage: 20
 
   server_api:
+    'q': -> 
+      @query || ""
     'limit': ->
       @perPage
     'offset': ->
       (@currentPage - 1) * @perPage
 
   parse: (response) ->
-    console.log(response)
-    @totalPages = Math.ceil(response.total / @perPage)
+    @total = response.total
+    @totalPages = Math.ceil(@total / @perPage)
     response.devices
 
   comparator: (database) ->

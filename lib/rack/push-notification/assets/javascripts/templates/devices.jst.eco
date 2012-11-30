@@ -1,55 +1,12 @@
 <header>
-  <aside>
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-      Download
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      <li>Download CSV</li>
-    </ul>
-  </aside>
-
   <h1>Devices <small>See Registered Tokens</small></h1>
 </header>
 
-<table>
-  <caption>
-    <span>Showing <%= @devices.length %> of 100 devices</span>
-    <form>
-      <input type="text" placeholder="Filter Devices..."/>
-    </form>
-  </caption>
-  <% if @devices.length > 0: %>
-    <thead>
-      <th>Token</th>
-      <th>Alias</th>
-      <th>Badge</th>
-      <th>Locale</th>
-      <th>Time Zone</th>
-    </thead>
-    <tbody>
-    <% for device in @devices.models: %>
-      <tr>
-        <td><%= device.get("token") %></td>
-        <td><%= device.get("alias") or "None" %></td>
-        <td><%= device.get("badge") %></td>
-        <td><%= device.get("locale") %></td>
-        <td><%= device.get("timezone") %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  <% end %>
-</table>
+<form class="filter">
+  <input type="text" placeholder="Filter Devices..." value="<%= @devices.query %>"/>
+</form>
 
-<% if true or @devices.length > 25: %>
-  <div class="pagination">
-    <ul>
-      <li class="<%= 'disabled' if @devices.currentPage == @devices.firstPage %>"><a class="previous" href="#">Prev</a></li>
-      <% for page in [@devices.firstPage..@devices.totalPages]: %>
-        <li class="<%= 'active' if page == @devices.currentPage %>"><a class="page" href="#"><%= page %></a></li>
-      <% end %>
-      <li class="<%= 'disabled' if @devices.currentPage == @devices.totalPages %>"><a class="next" href="#">Next</a></li>
-    </ul>
-  </div>
-<% end %>
+<table></table>
+
+<div class="pagination"></div>
 

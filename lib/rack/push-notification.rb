@@ -14,9 +14,8 @@ require 'sprockets-sass'
 
 require 'sequel'
 
+require 'rack/push-notification/server'
 require 'rack/push-notification/version'
-
-require 'pp'
 
 Sequel.extension(:pg_array, :migration)
 
@@ -50,88 +49,7 @@ module Rack
       end
     end
 
-    app = Class.new(Sinatra::Base) do
-      use Rack::PostBodyContentTypeParser
-      use Rack::Static, urls: ['/images'], root: ::File.join(::File.dirname(__FILE__), "push-notification/assets")
-      helpers Sinatra::Param
-
-      set :assets, Sprockets::Environment.new(::File.join(::File.dirname(__FILE__), "push-notification/assets"))
-      set :views, ::File.join(::File.dirname(__FILE__), "push-notification/assets/views")
-      settings.assets.append_path "javascripts"
-      settings.assets.append_path "stylesheets"
-
-      # disable :raise_errors, :show_exceptions
-
-      before do
-        content_type :json
-      end
-
-      get '/devices/?' do
-        param :q, String, empty: false
-        param :offset, Integer, default: 0
-        param :limit, Integer, max: 100, min: 1, default: 25
-
-        @devices = klass.dataset
-        @devices = @devices.filter("tsv @@ to_tsquery('english', ?)", "#{params[:q]}:*") if params[:q]
-        @devices = @devices.limit(params[:limit], params[:offset])
-        
-        {
-          devices: @devices,
-          total: klass.dataset.count 
-        }.to_json
-      end
-
-      put '/devices/:token/?' do
-        param :languages, Array
-        param :tags, Array
-
-        @record = klass.new(params)
-        if @record.save
-          status 201
-          @record.to_json
-        else
-          status 406
-          {errors: @record.errors}.to_json
-        end
-      end
-
-      get '/devices/:token/?' do
-        @record = klass.find(token: params[:token])
-        if @record
-          @record.to_json
-        else
-          status 404
-        end
-      end
-
-      delete '/devices/:token/?' do
-        @record = klass.find(token: params[:token]) or halt 404
-        if @record.destroy
-          status 200
-        else
-          status 406
-          {errors: record.errors}.to_json
-        end
-      end
-
-      get "/javascripts/:file.js" do
-        content_type "application/javascript"
-        settings.assets["#{params[:file]}.js"]
-      end
-
-      get "/stylesheets/:file.css" do
-        content_type "text/css"
-        settings.assets["#{params[:file]}.css"]
-      end
-
-      get '*' do
-        content_type :html
-
-        haml :index
-      end
-    end
-
-    return app
+    return ::Rack::PushNotification::Server
   end
 
   module PushNotification

@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency "bootstrap-sass", "~> 2.1.1"
   s.add_dependency "sprockets", "~> 2.8.1"
   s.add_dependency "sprockets-sass", "~> 0.9.1"
+  s.add_dependency "houston", "~> 0.1.1"
 
   s.files         = Dir["./**/*"].reject { |file| file =~ /\.\/(bin|example|log|pkg|script|spec|test|vendor)/ }
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

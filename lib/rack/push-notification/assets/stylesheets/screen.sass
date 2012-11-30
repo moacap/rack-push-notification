@@ -53,11 +53,14 @@ table
     span
       float: left
       display: block
+      position: relative
+      top: -20px
 
-    form
-      @extend .form-search
-      float: right
+form.filter
+  @extend .form-search
+  float: right
+  margin-bottom: 0
 
-      input[type="text"]
-        @extend .input-medium 
-        @extend .search-query
+  input[type="text"]
+    @extend .input-medium 
+    @extend .search-query
