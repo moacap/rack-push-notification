@@ -1,22 +1,51 @@
-<h1>Devices</h1>
+<header>
+  <aside>
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+      Download
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li>Download CSV</li>
+    </ul>
+  </aside>
+
+  <h1>Devices <small>See Registered Tokens</small></h1>
+</header>
 
 <table>
-  <thead>
-    <th>Token</th>
-    <th>Alias</th>
-    <th>Badge</th>
-    <th>Locale</th>
-    <th>Time Zone</th>
-  </thead>
-  <tbody>
-  <% for device in @devices: %>
-    <tr>
-      <td><%= device.token %></td>
-      <td><%= device.alias or "None" %></td>
-      <td><%= device.badge %></td>
-      <td><%= device.locale %></td>
-      <td><%= device.timezone %></td>
-    </tr>
+  <caption>
+    <span>Showing <%= @devices.length %> of 100 devices</span>
+    <form>
+      <input type="text" placeholder="Filter Devices..."/>
+    </form>
+  </caption>
+  <% if @devices.length > 0: %>
+    <thead>
+      <th>Token</th>
+      <th>Alias</th>
+      <th>Badge</th>
+      <th>Locale</th>
+      <th>Time Zone</th>
+    </thead>
+    <tbody>
+    <% for device in @devices: %>
+      <tr>
+        <td><%= device.token %></td>
+        <td><%= device.alias or "None" %></td>
+        <td><%= device.badge %></td>
+        <td><%= device.locale %></td>
+        <td><%= device.timezone %></td>
+      </tr>
+    <% end %>
+    </tbody>
   <% end %>
-  </tbody>
 </table>
+
+<% if true or @devices.length > 25: %>
+  <div class="pagination">
+    <ul>
+      <li class="disabled"><a href="#">Prev</a></li>
+      <li class="active"><a href="#">1</a></li>
+    </ul>
+  </div>
+<% end %>

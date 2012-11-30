@@ -1,6 +1,6 @@
 class RPN.Views.Devices extends Backbone.View
   template: JST['templates/devices']
-  el: "section[role='main']"
+  el: "[role='main']"
 
   initialize: ->
     @collection.on 'reset', =>

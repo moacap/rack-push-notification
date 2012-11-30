@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "eco", "~> 1.0.0"
   s.add_dependency "haml", "~> 3.1.7"
   s.add_dependency "sass", "~> 3.2.3"
-  s.add_dependency "zurb-foundation", "~> 3.2.2"
+  s.add_dependency "bootstrap-sass", "~> 2.1.1"
   s.add_dependency "sprockets", "~> 2.8.1"
   s.add_dependency "sprockets-sass", "~> 0.9.1"
 

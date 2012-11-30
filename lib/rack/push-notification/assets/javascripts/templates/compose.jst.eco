@@ -1,20 +1,49 @@
-<h1>Compose</h1>
+<header>
+  <h1>Compose <small>Send a Push Notification</small></h1>
+</header>
 
 <section class="recipients">
-  <h1>Recipients</h1>
+  <h2>Recipients</h2>
+
+  <form>
+    <ol>
+      <li class="btn-group input-prepend">
+        <div class="btn-group">
+          <button class="btn dropdown-toggle" data-toggle="dropdown">
+            Action
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>Lorem</li>
+          </ul>
+        </div>
+
+        <input class="span2" type="text">
+
+        <button class="btn btn-small" type="button">-</button>
+        <button class="btn btn-small" type="button">+</button>
+      </li>
+    </ol>
+  </form>
 </section>
 
 <section class="message">
-  <h1>Message</h1>
+  <h2>Message</h2>
 
-  <textarea id="payload" name="payload" rows="4" cols="60">
-    {
-      "aps": {
-        "alert": "Lorem ipsum dolar sit amet.",
-        "badge": 0
-      }
-    }
-  </textarea>
+  <div class="span7">
+    <textarea id="payload" name="payload" rows="4" cols="50">
+{
+  "aps": {
+    "alert": "Lorem ipsum dolar sit amet.",
+    "badge": 0
+  }
+}
+    </textarea>
+
+    <div class="alert">
+      <strong></strong> : <span></span>
+    </div>
+  </div>
 
   <figure class="iphone preview">
     <header>
@@ -45,5 +74,7 @@
 </section>
 
 <section class="schedule">
+  <h2>Schedule</h2>
+
 
 </section>

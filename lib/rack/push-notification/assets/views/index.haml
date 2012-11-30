@@ -10,17 +10,17 @@
     %link{rel: "stylesheet", href: "/stylesheets/screen.css", type: 'text/css', media: "screen", charset: "utf-8"}
 
   %body
-    
+    %header
+      %nav
+        .container
+          %a.brand{href: "/"} Rack::PushNotification
 
-    %div{role: "container"}
-      %header
-        %h1 Push Notifications
-        %nav
           %ul
             %li
               %a{href: "/"} Devices
-              %a{href: "/compose"} Compose              
+            %li
+              %a{href: "/compose"} Compose
 
-      %section{role: "main"}
+    .container{role: "main"}
 
     %script{type: "text/javascript", src: "/javascripts/application.js" }

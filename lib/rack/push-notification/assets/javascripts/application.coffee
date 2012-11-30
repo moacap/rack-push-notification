@@ -2,8 +2,9 @@
 #= require ./vendor/jquery
 #= require ./vendor/underscore
 #= require ./vendor/backbone
+#= require ./vendor/backbone.paginator
 #= require ./vendor/codemirror
-#= require ./vendor/codemirror-javascript
+#= require ./vendor/codemirror.javascript
 
 #= require ./rpn
 #= require_tree ./models

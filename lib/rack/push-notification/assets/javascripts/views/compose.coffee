@@ -1,6 +1,6 @@
 class RPN.Views.Compose extends Backbone.View
   template: JST['templates/compose']
-  el: "section[role='main']"
+  el: "[role='main']"
 
   events:
     'keyup textarea': 'updatePreview'
@@ -32,13 +32,15 @@ class RPN.Views.Compose extends Backbone.View
         $(".preview p").text(alert)
     
     catch error
-      # console.log(error)
-
+      $(".alert strong").text(error.name)
+      $(".alert span").text(error.message)
     finally
       if alert? and alert.length > 0
         $(".notification").show()
+        $(".alert").hide()
       else
         $(".notification").hide()
+        $(".alert").show()
 
   updateTime: ->
     $time = $("time")
