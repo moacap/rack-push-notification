@@ -2,79 +2,45 @@
   <h1>Compose <small>Send a Push Notification</small></h1>
 </header>
 
-<section class="recipients">
-  <h2>Recipients</h2>
+<figure class="iphone preview">
+</figure>
 
-  <form>
+<form id="compose">
+  <fieldset id="recipients">
+    <legend>Recipients</legend>
+
     <ol>
-      <li class="btn-group input-prepend">
-        <div class="btn-group">
-          <button class="btn dropdown-toggle" data-toggle="dropdown">
-            Action
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li>Lorem</li>
-          </ul>
-        </div>
-
-        <input class="span2" type="text">
-
-        <button class="btn btn-small" type="button">-</button>
-        <button class="btn btn-small" type="button">+</button>
+      <li>
+        <input type="radio" name="recipients" value="all" id="recipients[all]"/>
+        <label for="recipients[all]">All Devices</label>
+      </li>
+      <li>
+        <input type="radio" name="recipients" value="selected" id="recipients[selected]"/>
+        <label for="recipients[selected]">Selected Devices</label>
+        <textarea id="tokens" name="tokens" rows="3", cols="50"></textarea>
       </li>
     </ol>
-  </form>
-</section>
+  </fieldset>
 
-<section class="message">
-  <h2>Message</h2>
+  <fieldset class="message">
+    <legend>Message</legend>
 
-  <div class="span7">
-    <textarea id="payload" name="payload" rows="4" cols="50">
-{
-  "aps": {
-    "alert": "Lorem ipsum dolar sit amet.",
-    "badge": 0
-  }
-}
-    </textarea>
+    <div class="span7">
+      <textarea id="payload" name="payload" rows="4" cols="50">
+  {
+    "aps": {
+      "alert": "Lorem ipsum dolar sit amet.",
+      "badge": 0
+    }
+  }</textarea>
 
-    <div class="alert">
-      <strong></strong> : <span></span>
+      <div class="alert">
+        <strong></strong> : <span></span>
+      </div>
     </div>
-  </div>
+  </fieldset>
 
-  <figure class="iphone preview">
-    <header>
-      <figure class="status">
-        <span class="signal">▁</span>
-        <span class="carrier">Carrier</span>
-        <span class="battery">100%</span>
-      </figure>
+  <hr/>
 
-      <time>
-        <span class="time">9:04</span>
-        <span class="date">Thursday, November 29</span>
-      </time>
-    <header>
-
-    <figure class="notification">
-      <h1>App Name</h1>
-      <p></p>
-    </figure>
-
-    <footer>
-      <figure class="slider">
-        <input type="range" value="0"></input>
-        <span>slide to view</span>
-      </figure>
-    </footer>
-  </figure>
-</section>
-
-<section class="schedule">
-  <h2>Schedule</h2>
-
-
-</section>
+  <button id="send" class="btn btn-large" type="button">Send Push Notification</button>
+</form>

@@ -13,7 +13,7 @@ class RPN.Views.Devices extends Backbone.View
   render: ->
     @$el.html(@template(devices: @collection))
 
-    @paginationView ||= new RPN.Views.Pagination(collection: @collection)
+    @paginationView = new RPN.Views.Pagination(collection: @collection)
     @paginationView.render()
     @
 

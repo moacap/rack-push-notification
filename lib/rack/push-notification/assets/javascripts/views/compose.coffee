@@ -1,9 +1,12 @@
 class RPN.Views.Compose extends Backbone.View
   template: JST['templates/compose']
+  partial: JST['templates/_preview']
   el: "[role='main']"
 
   events:
     'keyup textarea': 'updatePreview'
+    'focus textarea': ->
+      @$el.find("input[type=radio][value=selected]").prop('checked',true)
 
   initialize: ->
     window.setInterval(@updateTime, 10000)
@@ -25,9 +28,10 @@ class RPN.Views.Compose extends Backbone.View
     @
 
   updatePreview: ->
+    @$el.find(".preview").html(@partial())
+
     try
       json = $.parseJSON(@editor.getValue())
-      console.log(json)
       if alert = json.aps.alert
         $(".preview p").text(alert)
     
@@ -47,4 +51,3 @@ class RPN.Views.Compose extends Backbone.View
     $time.attr("datetime", Date.now().toISOString())
     $time.find(".time").text(Date.now().toString("HH:mm"))
     $time.find(".date").text(Date.now().toString("dddd, MMMM d"))
-

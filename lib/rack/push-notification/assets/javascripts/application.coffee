@@ -14,10 +14,13 @@
 #= require_tree ./routers
 
 $ ->
-  $('div[role="main"] a, #logo a').live 'click', (event) ->
+  $('a').live 'click', (event) ->
     href = $(this).attr('href')
     event.preventDefault()
     window.app.navigate(href, {trigger: true})
+
+  $('.iphone .slider input').live 'change', (event) ->
+    $(this).siblings("span").css(opacity: (100 - $(this).val()) / 100.0)
 
   RPN.devices = new RPN.Collections.Devices
   RPN.devices.fetch(success: RPN.initialize)
