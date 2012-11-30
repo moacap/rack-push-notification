@@ -28,13 +28,13 @@
       <th>Time Zone</th>
     </thead>
     <tbody>
-    <% for device in @devices: %>
+    <% for device in @devices.models: %>
       <tr>
-        <td><%= device.token %></td>
-        <td><%= device.alias or "None" %></td>
-        <td><%= device.badge %></td>
-        <td><%= device.locale %></td>
-        <td><%= device.timezone %></td>
+        <td><%= device.get("token") %></td>
+        <td><%= device.get("alias") or "None" %></td>
+        <td><%= device.get("badge") %></td>
+        <td><%= device.get("locale") %></td>
+        <td><%= device.get("timezone") %></td>
       </tr>
     <% end %>
     </tbody>
@@ -44,8 +44,12 @@
 <% if true or @devices.length > 25: %>
   <div class="pagination">
     <ul>
-      <li class="disabled"><a href="#">Prev</a></li>
-      <li class="active"><a href="#">1</a></li>
+      <li class="<%= 'disabled' if @devices.currentPage == @devices.firstPage %>"><a class="previous" href="#">Prev</a></li>
+      <% for page in [@devices.firstPage..@devices.totalPages]: %>
+        <li class="<%= 'active' if page == @devices.currentPage %>"><a class="page" href="#"><%= page %></a></li>
+      <% end %>
+      <li class="<%= 'disabled' if @devices.currentPage == @devices.totalPages %>"><a class="next" href="#">Next</a></li>
     </ul>
   </div>
 <% end %>
+
