@@ -14,7 +14,8 @@ require 'sprockets-sass'
 
 require 'sequel'
 
-require 'rack/push-notification/server'
+require 'rack/push-notification/api'
+require 'rack/push-notification/admin'
 require 'rack/push-notification/version'
 
 Sequel.extension(:pg_array, :migration)
@@ -49,7 +50,10 @@ module Rack
       end
     end
 
-    return ::Rack::PushNotification::Server
+    Rack::Cascade.new([
+      ::Rack::PushNotification::API.new, 
+      ::Rack::PushNotification::Admin.new
+    ])
   end
 
   module PushNotification

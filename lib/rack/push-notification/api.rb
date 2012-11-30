@@ -1,16 +1,8 @@
 module Rack
   module PushNotification
-    class Server < Sinatra::Base
+    class API < Sinatra::Base
       use Rack::PostBodyContentTypeParser
-      use Rack::Static, urls: ['/images'], root: "assets"
       helpers Sinatra::Param
-
-      set :root, ::File.dirname(__FILE__)
-      set :views, Proc.new { ::File.join(root, "assets/views") }
-      
-      set :assets, Sprockets::Environment.new(::File.join(settings.root, "assets"))
-      settings.assets.append_path "javascripts"
-      settings.assets.append_path "stylesheets"
 
       disable :raise_errors, :show_exceptions
 
@@ -66,24 +58,6 @@ module Rack
           status 406
           {errors: record.errors}.to_json
         end
-      end
-
-      get "/javascripts/:file.js" do
-        content_type "application/javascript"
-
-        settings.assets["#{params[:file]}.js"]
-      end
-
-      get "/stylesheets/:file.css" do
-        content_type "text/css"
-
-        settings.assets["#{params[:file]}.css"]
-      end
-
-      get '*' do
-        content_type :html
-
-        haml :index
       end
     end
   end

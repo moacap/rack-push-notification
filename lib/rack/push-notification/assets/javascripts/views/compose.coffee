@@ -22,8 +22,8 @@ class RPN.Views.Compose extends Backbone.View
       matchBrackets: true
     })
 
-    this.updatePreview()
-    this.updateTime()
+    @updatePreview()
+    @updateTime()
 
     @
 
